@@ -1,0 +1,37 @@
+# Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+
+# Logs
+*.log
+
+# IDE - IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IDE - Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# IDE - VS Code
+.vscode/
+
+# Tooling
+.kilo/
+.code-review-graph/
+
+# OS
+.DS_Store
+Thumbs.db
