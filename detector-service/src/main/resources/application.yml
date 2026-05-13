@@ -1,0 +1,56 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: detector-service
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: detector-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+abuse-detector:
+  weights:
+    spike: 0.25
+    brute-force: 0.35
+    bot-pattern: 0.20
+    user-agent: 0.10
+    ip-behavior: 0.15
+    sequence: 0.30
+  thresholds:
+    flag: 0.45
+    throttle: 0.65
+    block: 0.80
+    override-block: 0.90
+  ttl:
+    flag-minutes: 5
+    throttle-minutes: 15
+    block-minutes: 60
+  sequences:
+    account_takeover:
+      pattern: "/api/login,/api/change-email,/api/change-password"
+    data_harvest:
+      pattern: "/api/users,/api/export,/api/download"
+
+logging:
+  level:
+    com.abuseguard: DEBUG
