@@ -1,5 +1,7 @@
 # API Gateway Abuse Detection System
 
+[![CI](https://github.com/sachiny0106/api-gateway-abuse-detector/actions/workflows/ci.yml/badge.svg)](https://github.com/sachiny0106/api-gateway-abuse-detector/actions/workflows/ci.yml)
+
 A real-time API abuse detection gateway built with **Spring Boot 3** and **Spring Cloud Gateway**.
 It sits in front of your backend, inspects every request, scores it against six abuse-detection
 rules, and dynamically **allows, flags, throttles, or blocks** traffic — without adding noticeable
