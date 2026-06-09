@@ -4,6 +4,8 @@ import com.abuseguard.common.model.ActionType;
 import com.abuseguard.common.model.Decision;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,8 @@ import java.util.Map;
 
 @Component
 public class DecisionMaker {
+
+    private static final Logger log = LoggerFactory.getLogger(DecisionMaker.class);
 
     private final StringRedisTemplate redisTemplate;
     private final Map<String, Double> weights;
@@ -134,6 +138,8 @@ public class DecisionMaker {
                 redisTemplate.expire(ipKey, getTtlForAction(decision.action()));
             }
         } catch (Exception e) {
+            log.error("Failed to persist decision to Redis (apiKey={}, ip={}): {}",
+                apiKey, ip, e.getMessage(), e);
         }
     }
 

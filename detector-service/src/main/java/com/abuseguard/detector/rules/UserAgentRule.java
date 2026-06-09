@@ -6,6 +6,8 @@ import com.abuseguard.detector.engine.RuleResult;
 import com.abuseguard.detector.store.DetectorRedisStore;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -49,18 +51,19 @@ public class UserAgentRule implements Rule {
         });
     }
 
-    private double calculateEntropy(String s) {
-        int[] freq = new int[256];
+    static double calculateEntropy(String s) {
+        if (s == null || s.isEmpty()) {
+            return 0.0;
+        }
+        Map<Character, Integer> freq = new HashMap<>();
         for (char c : s.toCharArray()) {
-            freq[c & 0xFF]++;
+            freq.merge(c, 1, Integer::sum);
         }
         double entropy = 0;
         int len = s.length();
-        for (int count : freq) {
-            if (count > 0) {
-                double p = (double) count / len;
-                entropy -= p * (Math.log(p) / Math.log(2));
-            }
+        for (int count : freq.values()) {
+            double p = (double) count / len;
+            entropy -= p * (Math.log(p) / Math.log(2));
         }
         return entropy;
     }

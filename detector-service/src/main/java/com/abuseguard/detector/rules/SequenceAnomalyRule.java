@@ -32,13 +32,13 @@ public class SequenceAnomalyRule implements Rule {
 
         if (!accountTakeoverPattern.isEmpty()) {
             configs.add(new SequenceConfig("account_takeover",
-                List.of(accountTakeoverPattern.split(",")),
+                parsePattern(accountTakeoverPattern),
                 0.9, 10));
         }
 
         if (!dataHarvestPattern.isEmpty()) {
             configs.add(new SequenceConfig("data_harvest",
-                List.of(dataHarvestPattern.split(",")),
+                parsePattern(dataHarvestPattern),
                 0.8, 5));
         }
 
@@ -74,6 +74,13 @@ public class SequenceAnomalyRule implements Rule {
 
             return RuleResult.notTriggered();
         });
+    }
+
+    static List<String> parsePattern(String csv) {
+        return java.util.Arrays.stream(csv.split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.toList());
     }
 
     private boolean matches(SequenceConfig config, List<String> actual) {
